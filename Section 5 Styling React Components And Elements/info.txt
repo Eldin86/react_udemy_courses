@@ -1,0 +1,1 @@
+- radium paket koristimo da stiliziramo inline elemente da mozemo koristiit pseudo elemente, media query i td, posto inline mozemo samo obicni css koristiti 

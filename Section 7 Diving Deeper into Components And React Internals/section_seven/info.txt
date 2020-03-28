@@ -1,0 +1,16 @@
+React.memo za funkcionalne komponente i shouldComponentUpdate za class komponente koristimo da bismo optimizirali komponentu
+
+Ako zelimo da provjeravamo sve props da li su se promjenili extendamo PureComponent a ne Component
+PusreComponent automatski implementira shouldComponentUpdate sa citavi props koje checkira da li su se promjenili
+
+SADRZAJ: 
+
+- setState
+- HOC 
+- (109 lekcija)TypeProps (da odredimo koje props odnosno koji tip props-a komponenta prima)
+- (110 lekcija) refs class based i functional based komponente createRef i useRef
+- (113 lekcija)Context (prosijedimo vrijednost dublje u komponentu direktno, a ne da ide preko svih komponenti, odnosno ako imamo velik niz komponenti i podataka da prolijedimo)
+- (114 lekcija) contextType class based komponenta i useContext za functional komponente
+
+//LEKCIJA 110 
+Focus na input polje je stavljen na prvi element, to smo radili preko state-a

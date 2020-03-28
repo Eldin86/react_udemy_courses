@@ -1,0 +1,6 @@
+UVIJEK RADIMO SA KOPIJOM OBJEKTA
+- (129 lekcija?) pretvaranje objekta u niz
+- (131 lekcija ) dodavanje ingredienta
+- (134) uklanjanje ingredienta, disable enable button ako je 0 ingredienta
+- (137 lekcija) kreiranje modal prozora
+- (139 lekcija) backdrop

@@ -1,0 +1,6 @@
+- (162 lekcija) axios GET method
+- (170 lekcija) handling errors axios
+- (171 lekcija) interceptorsi -> postavljamo ih na globalnom nivou, npr index.js
+- (172 lekcija) removing interceptors
+- (173 lekcija) podesavanje axiosa na globalnom nivou
+- (174 lekcija) koristenje instanci axiosa
