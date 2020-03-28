@@ -18,7 +18,6 @@ const buildControls = (props) => {
                 return <Buildcontrol 
                     key={ctrl.label} 
                     label={ctrl.label} 
-                    //Proslijedimo type ingredienta u metodu(koja je u BuildControl), mora biti isti redosljed i u state i ovdje
                     added={() => props.ingredientAdded(ctrl.type)}
                     removed={() => props.ingredientRemoved(ctrl.type)}
                     disabled={props.disabled[ctrl.type]}/>

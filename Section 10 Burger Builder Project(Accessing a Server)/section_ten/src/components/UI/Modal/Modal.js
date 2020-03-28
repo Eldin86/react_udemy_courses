@@ -7,10 +7,7 @@ import Auxiliary from '../../../hoc/Auxiliary/Auxiliary'
 import Backdrop from '../Backdrop/Backdrop'
 
 class Modal extends Component {
-    //Komponenta se updatuje samo kad se show properti promjeni promjeni
-    //Odnosno kad kliknemo na orderNow button
     shouldComponentUpdate(nextProps, nextState){
-        //Uslov ako je razlicito vrati true inace false
         console.log('[Modal.js nextProps.show]', nextProps.show)
         console.log('[Modal.js this.props.show]', this.props.show)
        return nextProps.show !== this.props.show 

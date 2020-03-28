@@ -6,6 +6,7 @@ import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls'
 import Modal from '../../components/UI/Modal/Modal'
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary'
+import axios from '../../axios-orders'
 
 const INGREDIENT_PRICES = {
     salad: 0.5,
@@ -25,7 +26,6 @@ class BurgerBuilder extends Component {
         },
         totalPrice: 4,
         purchasable: false,
-        //purchasing event kad kliknemo button da prikazemo modal ili sakrijemo
         purchasing: false
     }
 
@@ -104,7 +104,29 @@ class BurgerBuilder extends Component {
     }
     //Handler kojim nastavljamo dalje narudzbu
     purchaseContinueHandler = () => {
-        alert('You continue')
+        const order = {
+            ingredients: this.state.ingredients,
+            price: this.state.totalPrice,
+            customer: {
+                name: 'Eldin',
+                address: {
+                    street: 'Test street 1',
+                    zipCode: '88201',
+                    country: 'Bosnia and Herzegovina'
+                },
+                email: 'test@test.com',
+                deliveryMethod: 'fastest'
+            }
+        }
+        //Post post postavljamo u bazu podatke
+        //Moramo dodati .json za firebase
+        axios.post('/orders.json', order)
+            .then(response => {
+                console.log('[BurgerBuilder -> axios success response]', response)
+            })
+            .catch(error => {
+                console.log('[BurgerBuilder -> axios error response]', error)
+            })
     }
 
     render() {
@@ -113,17 +135,13 @@ class BurgerBuilder extends Component {
         }
         
         for(let key in disabledInfo){
-            //Vratimo petljom odredjeni ingredient vrijednst true ili false
-            //ako je manje ili jednako 0 to je true, ostalo vrati false
             disabledInfo[key] = disabledInfo[key] <= 0
             console.log('BurgerBuilder -> disabledInfo[key]',key,  disabledInfo[key])
         }
-        //Log koji dobijemo je npr {salad: true, meat: false, cheese: true, bacon: true}
         console.log('BurgerBuilder -> disabledInfo',  disabledInfo)
 
         return (
             <Auxiliary>
-                {/* Modal i sve unutar njega se mounta pomocu shouldComponentUpdate samo kad je show true */}
                 <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
                     <OrderSummary 
                         price={this.state.totalPrice}

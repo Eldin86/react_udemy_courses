@@ -8,7 +8,6 @@ import Toolbar from '../../components/Navigation/Toolbar/Toolbar'
 import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer'
 
 class Layout extends Component {
-    //Ovu komponentu smo pretvorili u klasu da bi lakse upravljali sa sidebarom
     state = {
         showSideDrawer:false
     }
