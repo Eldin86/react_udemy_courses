@@ -10,7 +10,10 @@ class Modal extends Component {
     shouldComponentUpdate(nextProps, nextState){
         console.log('[Modal.js nextProps.show]', nextProps.show)
         console.log('[Modal.js this.props.show]', this.props.show)
-       return nextProps.show !== this.props.show 
+        //Updatujemo komponentu samo ako se show promjeni i props.children 
+        //props.children je orderSummary komponenta, ako se i u njoj nesto promjeni updatuj
+        //Updatuje se ako se promjene children
+       return nextProps.show !== this.props.show  || nextProps.children !== this.props.children
     }
 
     render(){
