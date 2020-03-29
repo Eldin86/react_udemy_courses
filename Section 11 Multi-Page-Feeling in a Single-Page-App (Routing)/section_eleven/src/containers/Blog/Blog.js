@@ -16,12 +16,9 @@ class Blog extends Component {
     }
 
     componentDidMount(){
-        //state moramo updatovati unutar axios metode, inace ne bi dobili podatke
         axios.get('/posts')
         .then(response => {
-            //Dohvatili smo samo 4 posta sa servera
             const posts = response.data.slice(0, 4);
-            //objekat koji smo dohvatili sa servera smo spreadali i dodali smo novi property author
             const updatedPost = posts.map(post => {
                 return {
                     ...post,
@@ -32,13 +29,11 @@ class Blog extends Component {
             console.log(response)
         })
         .catch(error => {
-            //console.log(error)
             this.setState({error: true})
         })
     }
 
     postSelectedHandler = (id) => {
-        //Smjestili smo id od posta u selectedPostId state
         this.setState({selectedPostId: id})
     }
 

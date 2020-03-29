@@ -16,8 +16,6 @@ class NewPost extends Component {
             body: this.state.content, 
             author: this.state.author
         }
-        //Kad radimo post moramo proslijediti sta saljemo u bazu
-        //Proslijedili smo objekat ali ce axios automatski da ga stringify
         axios.post('/posts', data)
             .then(response => {
                 console.log(response)

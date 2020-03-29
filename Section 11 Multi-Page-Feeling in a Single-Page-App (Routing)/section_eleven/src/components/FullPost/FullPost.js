@@ -21,10 +21,7 @@ class FullPost extends Component {
     }*/
 
     componentDidUpdate(){
-        //Ako imamo id od posta
         if(this.props.id){
-            //Ako imamo loaded post, ili, ako loadedPost.id je razlicit od onoga sto smo dobili iz Blog
-            //komponente onda poalji zahtjev
             if(!this.state.loadedPost || (this.state.loadedPost.id !== this.props.id)){
                 console.log(Boolean(!this.state.loadedPost))
                 axios.get('/posts/' + this.props.id)
@@ -44,13 +41,10 @@ class FullPost extends Component {
     }
 
     render () {
-        // defaultno imamo da izabere post
         let post = <p style={{textAlign: 'center'}}>Please select a Post!</p>;
-        // onda ako imamo id od posta pojavi se loading
         if(this.props.id){
             post = <p style={{textAlign: 'center'}}>Loading....</p>
         }
-        // nakon sto smo dohvtili podatke sa servera ispisujemo post a uklanjamo loading
         if(this.state.loadedPost){
             post = (
                 <div className="FullPost">
