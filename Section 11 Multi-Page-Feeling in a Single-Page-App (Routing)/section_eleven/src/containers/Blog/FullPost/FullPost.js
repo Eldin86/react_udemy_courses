@@ -20,11 +20,31 @@ class FullPost extends Component {
         }
     }*/
 
+    //Ucita podatke prvi put kad se rendera komponenta
+    componentDidMount(){
+        console.log('[FullPost.js -> this.props]', this.props)
+        this.loadData()
+    }
+
+    //moramo da handlamo promjene u componentDidUpdate ako se komponenta vec loadira kroz Router, jer Router nece unmountati staru i mountati je ponovo
+    //Ucita podatke kad god se updatuje komponenta, zato moramo da imamo componentDidMounun i componentDidUpdate
+    //componentDidUpdate se ponovo rendera kad se props promjene
     componentDidUpdate(){
-        if(this.props.id){
-            if(!this.state.loadedPost || (this.state.loadedPost.id !== this.props.id)){
-                console.log(Boolean(!this.state.loadedPost))
-                axios.get('/posts/' + this.props.id)
+        console.log('[FullPost.js -> this.props]', this.props)
+        this.loadData()
+    }
+
+    loadData(){
+        
+        //Ako je match.params.id true
+        //Ako matchira u url-u this.props.match.params
+        if(this.props.match.params.id){
+            //Ako loadedPost nije null, i ono sto dobijemo iz url-a je string, moramo ga u num pretvoriti
+            if(!this.state.loadedPost || (this.state.loadedPost.id !== +this.props.match.params.id)){
+                console.log('[FullPost.js -> !this.state.loadedPost]',Boolean(!this.state.loadedPost))
+                console.log('[FullPost.js -> this.state.loadedPost]', this.state.loadedPost)
+                //Dohvatimo post sa odgovarajucim id
+                axios.get('/posts/' + this.props.match.params.id)
             .then(response => {
                 this.setState({loadedPost: response.data})
             })
@@ -34,7 +54,7 @@ class FullPost extends Component {
     }
 
     deletePostHandler = () => {
-        axios.delete('/posts/' + this.props.id)
+        axios.delete('/posts/' + this.props.match.params.id)
             .then(response => {
                 console.log(response)
             })
@@ -42,7 +62,7 @@ class FullPost extends Component {
 
     render () {
         let post = <p style={{textAlign: 'center'}}>Please select a Post!</p>;
-        if(this.props.id){
+        if(this.props.match.params.id){
             post = <p style={{textAlign: 'center'}}>Loading....</p>
         }
         if(this.state.loadedPost){

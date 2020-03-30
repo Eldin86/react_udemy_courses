@@ -1,6 +1,7 @@
-- (162 lekcija) axios GET method
-- (170 lekcija) handling errors axios
-- (171 lekcija) interceptorsi -> postavljamo ih na globalnom nivou, npr index.js
-- (172 lekcija) removing interceptors
-- (173 lekcija) podesavanje axiosa na globalnom nivou
-- (174 lekcija) koristenje instanci axiosa
+- (191 lekcija) instaliranje router-a, samo trebamo instalirati react-router-dom
+- (198 lekcija) withRouter HOC
+- (199 - 200 lekcija) apsolutna i relativna putanja
+- (201 lekcija) styling active linkove
+- (204 lekcija) extracting query params (?something=somevalue) i fragment (#something)
+- (208 - 209 lekcija) nested routing
+- (210 lekcija) redirektanje

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios'
+import {Redirect} from 'react-router-dom'
 
 import './NewPost.css';
 
@@ -7,8 +8,14 @@ class NewPost extends Component {
     state = {
         title: '',
         content: '',
-        author: 'Max'
+        author: 'Max',
+        submited: false
     }
+
+    componentDidMount(){
+        console.log('[NewPost.js -> this.props]', this.props)
+    }
+
 
     postDataHandler = () => {
         const data = {
@@ -19,12 +26,22 @@ class NewPost extends Component {
         axios.post('/posts', data)
             .then(response => {
                 console.log(response)
+                //Push stavi na vrh stacka page, tako da mozemo koristiti back button u browseru da se vratimo na prethodni page
+                this.props.history.push('/posts')
+                //Redirect zamjeni trenutnu stranicu, tako da back button ne radi da se vratimo na prethodni page
+                //this.setState({submited: true})
             })
     }
 
     render () {
+        let redirect = null;
+        if(this.state.submited){
+            redirect = <Redirect to="/posts"/>
+        }
         return (
             <div className="NewPost">
+                {/* Mozemo samo koristiti 'to' atribut jer koristimo van switch komponente */}
+                {redirect}
                 <h1>Add a Post</h1>
                 <label>Title</label>
                 <input type="text" value={this.state.title} onChange={(event) => this.setState({title: event.target.value})} />
