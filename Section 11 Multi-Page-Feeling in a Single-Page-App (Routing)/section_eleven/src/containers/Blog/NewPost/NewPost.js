@@ -14,6 +14,8 @@ class NewPost extends Component {
 
     componentDidMount(){
         console.log('[NewPost.js -> this.props]', this.props)
+        //Alternativa guardu je da koristimo replace
+        //this.props.history.replace('/posts')
     }
 
 

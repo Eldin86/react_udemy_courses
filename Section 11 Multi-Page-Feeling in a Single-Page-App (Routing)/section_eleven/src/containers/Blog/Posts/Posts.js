@@ -24,10 +24,10 @@ class Posts extends Component {
                     }
                 })
                 this.setState({ posts: updatedPost })
-                console.log(response)
+                //console.log(response)
             })
             .catch(error => {
-                console.log('[Posts.js error]', error)
+                //console.log('[Posts.js error]', error)
                 //this.setState({error: true})
             })
     }

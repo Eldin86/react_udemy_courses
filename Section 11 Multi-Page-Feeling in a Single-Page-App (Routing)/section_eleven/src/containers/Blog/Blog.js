@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
-import { Route, NavLink, Switch, Redirect } from 'react-router-dom'
+import { Route, NavLink, Switch } from 'react-router-dom'
 //import axios from 'axios'
 import './Blog.css';
 import Posts from './Posts/Posts'
-import NewPost from './NewPost/NewPost'
+//import NewPost from './NewPost/NewPost'
+import asyncComponent from '../../hoc/asyncComponent'
+
+//Importuj ono sto vratimo samo kad se ova funkcija izvrsi
+const AsyncNewPost = asyncComponent(() => {
+    //importujemo putanju komponente koju zelimo lazy load
+    return import('./NewPost/NewPost')
+})
 
 class Blog extends Component {
-
+    state = {
+        auth: true
+    }
     render() {
         return (
             <div className="Blog">
@@ -52,12 +61,26 @@ class Blog extends Component {
                 {/* Switch govori router da loadira samo prvu na koju naidje da matchira od ponudjenih route */}
                 {/* Redosljd je vazan pogotovo kad koristimo switch */}
                 <Switch>
+
                     {/* Router dohvati putanju iz url browsera */}
-                    <Route path="/new-post" component={NewPost} />
+                    {
+                        //Provjeravamo da li je user authenticated
+                        this.state.auth
+                            ? <Route path="/new-post" component={AsyncNewPost} />
+                            : null
+                    }
+
                     <Route path="/posts" component={Posts} />
-                    {/* Route komponenta ima from atribut koji pokazuje od koje rute do na koju */}
+
+                    {/* Ako ne dodamo putanju a dodamo komponentu ili render metodu da renderamo */}
+                    {/* Ovako smo kreirali 404 page, i ne radi sa redirect komponentom */}
+                    {/* Uvijek je zadnju postavljamo */}
+                    <Route render={() => <h1 style={{textAlign: 'center'}}>404 <br/> Not Found</h1>}/>
+                    
+                    {/* Redirect komponenta ima from atribut koji pokazuje od koje rute do na koju */}
                     {/* Ako koristimo Redirect van Switch from ne moze biti odredjeno, mozemo samo to odrediti */}
-                    <Redirect from='/' to="/posts"/>
+                    {/* <Redirect from='/' to="/posts" /> */}
+
                     {/* <Route path="/" component={Posts} /> */}
                 </Switch>
             </div>

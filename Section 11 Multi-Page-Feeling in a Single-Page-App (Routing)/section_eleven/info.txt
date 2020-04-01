@@ -5,3 +5,7 @@
 - (204 lekcija) extracting query params (?something=somevalue) i fragment (#something)
 - (208 - 209 lekcija) nested routing
 - (210 lekcija) redirektanje
+- (213 lekcija) Router Guards
+- (214 lekcija) 404 page
+- (215 lekcija) lazy loading
+- (216 lekcija) lazy loading sa React Suspense

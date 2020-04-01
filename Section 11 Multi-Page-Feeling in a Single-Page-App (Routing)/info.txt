@@ -1,0 +1,11 @@
+- (191 lekcija) instaliranje router-a, samo trebamo instalirati react-router-dom
+- (198 lekcija) withRouter HOC
+- (199 - 200 lekcija) apsolutna i relativna putanja
+- (201 lekcija) styling active linkove
+- (204 lekcija) extracting query params (?something=somevalue) i fragment (#something)
+- (208 - 209 lekcija) nested routings
+- (210 lekcija) redirektanje
+- (213 lekcija) Router Guards
+- (214 lekcija) 404 page
+- (215 lekcija) lazy loading
+- (216 lekcija) lazy loading sa React Suspense
