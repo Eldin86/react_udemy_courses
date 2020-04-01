@@ -1,10 +1,12 @@
 import React from 'react';
 import classes from './Burger.module.css'
 import BurgerIngredient from './BurgerIngredient/BurgerIngredient'
+import {withRouter} from 'react-router-dom'
 
 
 const burger = (props) => {
     console.log(Object.keys(props.ingredients))
+    console.log('[Burger.js] -> this.props', props)
 
     let transformedIngredients = Object.keys(props.ingredients)
         .map(igKey => {

@@ -35,6 +35,7 @@ class BurgerBuilder extends Component {
     
 
     componentDidMount() {
+        console.log('[BurgerBuilder.js] -> this.props', this.props)
         axios.get('https://burger-projekat-ii.firebaseio.com/ingredients.json')
             .then(response => {
                 this.setState({ ingredients: response.data })
@@ -107,32 +108,34 @@ class BurgerBuilder extends Component {
         this.setState({ purchasing: false })
         console.log('purchaseCancelHandler', this.state.purchasing)
     }
-    //Handler kojim nastavljamo dalje narudzbu
+    //Handler kojim nastavljamo dalje narudzbu, CONTINUE button
     purchaseContinueHandler = () => {
-        this.setState({ loading: true })
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name: 'Eldin',
-                address: {
-                    street: 'Test street 1',
-                    zipCode: '88201',
-                    country: 'Bosnia and Herzegovina'
-                },
-                email: 'test@test.com',
-                deliveryMethod: 'fastest'
-            }
-        }
-        axios.post('/orders.json', order)
-            .then(response => {
-                console.log('[BurgerBuilder -> axios success response]', response)
-                this.setState({ loading: false, purchasing: false })
-            })
-            .catch(error => {
-                console.log('[BurgerBuilder -> axios error response]', error)
-                this.setState({ loading: false, purchasing: false })
-            })
+        // this.setState({ loading: true })
+        // const order = {
+        //     ingredients: this.state.ingredients,
+        //     price: this.state.totalPrice,
+        //     customer: {
+        //         name: 'Eldin',
+        //         address: {
+        //             street: 'Test street 1',
+        //             zipCode: '88201',
+        //             country: 'Bosnia and Herzegovina'
+        //         },
+        //         email: 'test@test.com',
+        //         deliveryMethod: 'fastest'
+        //     }
+        // }
+        // axios.post('/orders.json', order)
+        //     .then(response => {
+        //         console.log('[BurgerBuilder -> axios success response]', response)
+        //         this.setState({ loading: false, purchasing: false })
+        //     })
+        //     .catch(error => {
+        //         console.log('[BurgerBuilder -> axios error response]', error)
+        //         this.setState({ loading: false, purchasing: false })
+        //     })
+        //Nakon sto kliknemo na CONTINUE odvede nas na Checkout -> CheckoutSummary komponentu
+        this.props.history.push('/checkout')
     }
 
     render() {
