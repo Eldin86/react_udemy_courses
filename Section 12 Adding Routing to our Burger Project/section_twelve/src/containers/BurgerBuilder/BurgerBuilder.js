@@ -35,14 +35,11 @@ class BurgerBuilder extends Component {
     
 
     componentDidMount() {
-        //Get metoda koju koristimo da dohvatimo podatke sa servera
-        //postavljamo state na vrijednosti koje dohvatimo iz baze, koje smo u bazi postavili
         axios.get('https://burger-projekat-ii.firebaseio.com/ingredients.json')
             .then(response => {
                 this.setState({ ingredients: response.data })
             })
             .catch(error => {
-                //Ako imamo error smjestimo ga u state kao true
                 this.setState({error: true})
             })
     }
@@ -62,17 +59,13 @@ class BurgerBuilder extends Component {
 
     //Handler za dodavanje ingredientsa na button
     addIngredientHandler = (type) => {
-        //dohvatimo ingredient pomocu type-a
         const oldCount = this.state.ingredients[type];
         console.log('[oldCount -> addIngredientHandler]', oldCount)
         const updatedCount = oldCount + 1
-        //spreadamo objekat odnosno kopiramo ga
         const updatedIngredients = {
             ...this.state.ingredients
         }
-        //Unutar kopiranog objekta zamjenimo vijednost sa novom vrijednosti
         updatedIngredients[type] = updatedCount
-        //Dohvatimo cijenu ingredienta pomocu type-a
         const priceAdition = INGREDIENT_PRICES[type];
         const oldPrice = this.state.totalPrice
         const newPrice = oldPrice + priceAdition
@@ -81,26 +74,20 @@ class BurgerBuilder extends Component {
             totalPrice: newPrice,
             ingredients: updatedIngredients
         })
-        //Proslijedimo vec updateovan objekat u updtePurchaseState
         this.updatePurchaseState(updatedIngredients)
     }
     //Handler za brisanje ingredienta na button
     removeIngredientHandler = (type) => {
-        //dohvatimo ingredient pomocu type-a
         const oldCount = this.state.ingredients[type];
-        //Ako je oldCount manje ili jednako nula retun radimo, odnosno ako je cheese npr 0 return
         if (oldCount <= 0) {
             return;
         }
         console.log('[oldCount -> addIngredientHandler]', oldCount)
         const updatedCount = oldCount - 1
-        //spreadamo objekat odnosno kopiramo ga
         const updatedIngredients = {
             ...this.state.ingredients
         }
-        //Unutar kopiranog objekta zamjenimo vijednost sa novom vrijednosti
         updatedIngredients[type] = updatedCount
-        //Dohvatimo cijenu ingredienta pomocu type-a
         const priceDeduction = INGREDIENT_PRICES[type];
         const oldPrice = this.state.totalPrice
         const newPrice = oldPrice - priceDeduction
@@ -122,7 +109,6 @@ class BurgerBuilder extends Component {
     }
     //Handler kojim nastavljamo dalje narudzbu
     purchaseContinueHandler = () => {
-        //Klikom na continue aktiviramo spinner, poslali smo request
         this.setState({ loading: true })
         const order = {
             ingredients: this.state.ingredients,
@@ -138,21 +124,13 @@ class BurgerBuilder extends Component {
                 deliveryMethod: 'fastest'
             }
         }
-        //Post metodom saljemo u bazu podatke
-        //Moramo dodati .json za firebase
         axios.post('/orders.json', order)
             .then(response => {
                 console.log('[BurgerBuilder -> axios success response]', response)
-                //Loading postavljamo na false nakon sto smo dohvatili podatke
-                //Modal zatvaramo tako sto purchasing postavljamo na false
-                //Kada je response tu, zaustavimo loading bez obzira na status error ili success
                 this.setState({ loading: false, purchasing: false })
             })
             .catch(error => {
                 console.log('[BurgerBuilder -> axios error response]', error)
-                //Loading postavljamo na false i kad error imamo
-                //Da user ne pomisli da se i dalje nesto desava dok imamo error
-                //Modal takodjer zatvaramo kad imamo error
                 this.setState({ loading: false, purchasing: false })
             })
     }
@@ -170,11 +148,8 @@ class BurgerBuilder extends Component {
 
         let orderSummary = null;
 
-        //U slucaju da css ne radi ispisemo poruku 'ingerdients cant be loaded'
         let burger = this.state.error ? <h1 style={{textAlign: 'center'}}>Ingredients can't be loaded</h1> : <Spinner />
-        ////Trebamo provjeriti da li imamo ingredientse prije nego renderamo bilo sta sto ovisi o ingredientsima
-        //Ako ingredientsi nisu null
-        if (this.state.ingredients) {
+       if (this.state.ingredients) {
             burger = (
                 <Auxiliary>
                     <Burger ingredients={this.state.ingredients} />
