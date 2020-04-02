@@ -1,3 +1,4 @@
 UVIJEK RADIMO SA KOPIJOM OBJEKTA
 - (225 lekcija) prosljedjivanje podataka preko query params
 - (226 lekcija) contact form
+- (227 lekcija) prosljedjivanje informacija u drugu komponentu pomocu Rute -> render

@@ -4,6 +4,7 @@ import {Route, Switch} from 'react-router-dom'
 
 import Layout from './hoc/Layout/Layout'
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder'
+import Orders from './containers/Orders/Orders'
 
 import Checkout from './containers/Checkout/Checkout'
 
@@ -15,6 +16,7 @@ class App extends Component{
         <Layout>
           <Switch>
            <Route path="/checkout" component={Checkout}/>
+           <Route path="/orders" component={Orders}/>
            {/* Samo direktni child ima pristup location, history, match propsima od route peropety,
            dakle children od BurgerBuilder nemaju pristup tome, moramo ih rucno proslijediti
            ili WithRouter */}

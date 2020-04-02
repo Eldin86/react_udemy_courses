@@ -108,15 +108,17 @@ class BurgerBuilder extends Component {
     }
     //Handler kojim nastavljamo dalje narudzbu, CONTINUE button
     purchaseContinueHandler = () => {
-
         //Niz koji sadrzi ingredientse koje smo narucili i koje cemo proslijediti preko history.push
         const queryParams = [];
         for(let i in this.state.ingredients){
             //encodeURIComponent da enkodira podatke za url, white space, %20 i td
             queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]))
         }
+        //Cijenu takodjer posljemo preko queryParams
+        queryParams.push('price=' + this.state.totalPrice)
         //Join radimo da spojimo sve query parametre (bacon=0&cheese=4&meat=0&salad=4)
         const queryString = queryParams.join('&')
+        console.log('[BurgerBuilder.js -> queryString]', queryString)
 
         //Nakon sto kliknemo na CONTINUE odvede nas na Checkout -> CheckoutSummary komponentu
         //Pushamo ingredientse koje smo narucili u search 
@@ -181,27 +183,4 @@ class BurgerBuilder extends Component {
 //Proslijedili smo komponentu kao argument da bismo je mogli vratiti nazad i ponovo normlano koristiti?
 export default withErrorHandler(BurgerBuilder, axios)
 
- // this.setState({ loading: true })
-        // const order = {
-        //     ingredients: this.state.ingredients,
-        //     price: this.state.totalPrice,
-        //     customer: {
-        //         name: 'Eldin',
-        //         address: {
-        //             street: 'Test street 1',
-        //             zipCode: '88201',
-        //             country: 'Bosnia and Herzegovina'
-        //         },
-        //         email: 'test@test.com',
-        //         deliveryMethod: 'fastest'
-        //     }
-        // }
-        // axios.post('/orders.json', order)
-        //     .then(response => {
-        //         console.log('[BurgerBuilder -> axios success response]', response)
-        //         this.setState({ loading: false, purchasing: false })
-        //     })
-        //     .catch(error => {
-        //         console.log('[BurgerBuilder -> axios error response]', error)
-        //         this.setState({ loading: false, purchasing: false })
-        //     })
+ 
