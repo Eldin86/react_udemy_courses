@@ -1,2 +1,3 @@
 UVIJEK RADIMO SA KOPIJOM OBJEKTA
-- ()
+- (225 lekcija) prosljedjivanje podataka preko query params
+- (226 lekcija) contact form

@@ -32,8 +32,6 @@ class BurgerBuilder extends Component {
         error: false
     }
 
-    
-
     componentDidMount() {
         console.log('[BurgerBuilder.js] -> this.props', this.props)
         axios.get('https://burger-projekat-ii.firebaseio.com/ingredients.json')
@@ -110,32 +108,22 @@ class BurgerBuilder extends Component {
     }
     //Handler kojim nastavljamo dalje narudzbu, CONTINUE button
     purchaseContinueHandler = () => {
-        // this.setState({ loading: true })
-        // const order = {
-        //     ingredients: this.state.ingredients,
-        //     price: this.state.totalPrice,
-        //     customer: {
-        //         name: 'Eldin',
-        //         address: {
-        //             street: 'Test street 1',
-        //             zipCode: '88201',
-        //             country: 'Bosnia and Herzegovina'
-        //         },
-        //         email: 'test@test.com',
-        //         deliveryMethod: 'fastest'
-        //     }
-        // }
-        // axios.post('/orders.json', order)
-        //     .then(response => {
-        //         console.log('[BurgerBuilder -> axios success response]', response)
-        //         this.setState({ loading: false, purchasing: false })
-        //     })
-        //     .catch(error => {
-        //         console.log('[BurgerBuilder -> axios error response]', error)
-        //         this.setState({ loading: false, purchasing: false })
-        //     })
+
+        //Niz koji sadrzi ingredientse koje smo narucili i koje cemo proslijediti preko history.push
+        const queryParams = [];
+        for(let i in this.state.ingredients){
+            //encodeURIComponent da enkodira podatke za url, white space, %20 i td
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]))
+        }
+        //Join radimo da spojimo sve query parametre (bacon=0&cheese=4&meat=0&salad=4)
+        const queryString = queryParams.join('&')
+
         //Nakon sto kliknemo na CONTINUE odvede nas na Checkout -> CheckoutSummary komponentu
-        this.props.history.push('/checkout')
+        //Pushamo ingredientse koje smo narucili u search 
+        this.props.history.push({
+            pathname: '/checkout',
+            search: queryString
+        })
     }
 
     render() {
@@ -192,3 +180,28 @@ class BurgerBuilder extends Component {
 }
 //Proslijedili smo komponentu kao argument da bismo je mogli vratiti nazad i ponovo normlano koristiti?
 export default withErrorHandler(BurgerBuilder, axios)
+
+ // this.setState({ loading: true })
+        // const order = {
+        //     ingredients: this.state.ingredients,
+        //     price: this.state.totalPrice,
+        //     customer: {
+        //         name: 'Eldin',
+        //         address: {
+        //             street: 'Test street 1',
+        //             zipCode: '88201',
+        //             country: 'Bosnia and Herzegovina'
+        //         },
+        //         email: 'test@test.com',
+        //         deliveryMethod: 'fastest'
+        //     }
+        // }
+        // axios.post('/orders.json', order)
+        //     .then(response => {
+        //         console.log('[BurgerBuilder -> axios success response]', response)
+        //         this.setState({ loading: false, purchasing: false })
+        //     })
+        //     .catch(error => {
+        //         console.log('[BurgerBuilder -> axios error response]', error)
+        //         this.setState({ loading: false, purchasing: false })
+        //     })

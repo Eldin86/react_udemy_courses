@@ -12,7 +12,9 @@ const checkoutSummary = (props) => {
                 <Burger ingredients={props.ingredients} />
             </div>
             <div>
+                {/* Handler kojim cancel order i vraca nas na prethodnu stranicu */}
                 <Button btnType="Danger" clicked={props.checkoutCancelled}>CANCEL</Button>
+                {/* handler kojim potvrdjujemo order i idemo dalje na checkout-order formu */}
                 <Button btnType="Success" clicked={props.checkoutContinued}>CONTINUE</Button>
             </div>
         </div>
