@@ -17,9 +17,6 @@ class App extends Component{
           <Switch>
            <Route path="/checkout" component={Checkout}/>
            <Route path="/orders" component={Orders}/>
-           {/* Samo direktni child ima pristup location, history, match propsima od route peropety,
-           dakle children od BurgerBuilder nemaju pristup tome, moramo ih rucno proslijediti
-           ili WithRouter */}
            <Route path="/" exact component={BurgerBuilder}/>
            </Switch>
         </Layout>

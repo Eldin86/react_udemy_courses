@@ -5,39 +5,139 @@ import axios from '../../../axios-orders'
 import Button from '../../../components/UI/Button/Button'
 import classes from './ContactData.module.css'
 import Spinner from '../../../components/UI/Spinner/Spinner'
+import Input from '../../../components/UI/Input/Input'
 
 class ContactData extends Component {
     //Dohvatamo podatke u ovaj state?
     state = {
-        name: '',
-        email: '',
-        address: {
-            street: '',
-            postalCode: ''
+        //konfigurisemo sva polja i vrijednosti
+        orderForm: {
+            name: {
+                //Input element
+                elementType: 'input',
+                //konfiguracijski atribut za odabrani tag element
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Your Name'
+                },
+                value: '',
+                validation: {
+                    //input polje ne smije biti prazno
+                    required: true
+                },
+                valid: false,
+                //Provjeravamo da li je user vec unio ista u input ili ne
+                touched: false
+            },
+            street: {
+                //Input element
+                elementType: 'input',
+                //konfiguracijski atribut za odabrani tag element
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Street'
+                },
+                value: '',
+                validation: {
+                    //input polje ne smije biti prazno
+                    required: true
+                },
+                valid: false,
+                //Provjeravamo da li je user vec unio ista u input ili ne
+                touched: false
+            },
+            zipCode: {
+                //Input element
+                elementType: 'input',
+                //konfiguracijski atribut za odabrani tag element
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'ZIP Code'
+                },
+                value: '',
+                validation: {
+                    //input polje ne smije biti prazno
+                    required: true,
+                    minLength: 5,
+                    maxLength: 5
+                },
+                valid: false,
+                //Provjeravamo da li je user vec unio ista u input ili ne
+                touched: false
+            },
+            country: {
+                //Input element
+                elementType: 'input',
+                //konfiguracijski atribut za odabrani tag element
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Country'
+                },
+                value: '',
+                validation: {
+                    //input polje ne smije biti prazno
+                    required: true
+                },
+                valid: false,
+                //Provjeravamo da li je user vec unio ista u input ili ne
+                touched: false
+            },
+            email: {
+                //Input element
+                elementType: 'email',
+                //konfiguracijski atribut za odabrani tag element
+                elementConfig: {
+                    type: 'text',
+                    placeholder: 'Your Email'
+                },
+                value: '',
+                validation: {
+                    //input polje ne smije biti prazno
+                    required: true
+                },
+                valid: false,
+                //Provjeravamo da li je user vec unio ista u input ili ne
+                touched: false
+            },
+            deliveryMethod: {
+                //Select element
+                elementType: 'select',
+                //konfiguracijski atribut za odabrani tag element
+                //njega smo dalje rijesili u Input komponenti
+                elementConfig: {
+                    //Options su niz objekata, odnosno vrijednosti za select tag
+                    options: [
+                        { value: 'fastest', displayValue: 'Fastest' },
+                        { value: 'cheapest', displayValue: 'Cheapest' }
+                    ]
+                },
+                //defaultnu vrijednost smo postavili, jer kad submitamo formu bez promjene value
+                //u bazu ce upisti kao '', tek kad izaberemo drugu opciju onda ce biti u redu
+                value: 'fastest',
+                validation: {},
+                //Stavili smo ovo polje uvijek da bude true
+                valid: true
+            }
         },
+        //Provjeravamo da li je forma validna, da mozemo disable enable button na formi
+        formIsValid: false,
         loading: false
     }
 
     //Handler kojim saljemo podatke u bazu pri narudzbi nakon sto popunimo formu
     orderHandler = (event) => {
-        //PreventDefault koristimo da ne loadira formu kad kliknemo na dugme
         event.preventDefault()
         console.log('[ContactData.js -> ingredients]', this.props.ingredients)
         this.setState({ loading: true })
+        const formData = {}
+        for(let formElementIdentifier in this.state.orderForm){
+            formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value
+        }
         const order = {
             //this.props.ingredients su iz checkout komponente koje smo proslijedili u render metodu (Route)
             ingredients: this.props.ingredients,
             price: this.props.price,
-            customer: {
-                name: 'Eldin',
-                address: {
-                    street: 'Test street 1',
-                    zipCode: '88201',
-                    country: 'Bosnia and Herzegovina'
-                },
-                email: 'test@test.com',
-                deliveryMethod: 'fastest'
-            }
+            orderData: formData
         }
         axios.post('/orders.json', order)
             .then(response => {
@@ -50,17 +150,84 @@ class ContactData extends Component {
                 this.setState({ loading: false })
             })
     }
+
+    //Handler kojim dohvacamo vrijednost inputa iz forme i updatujemo
+    inputChangedHandler = (event, inputIdentifier) => {
+        //Prvo smo klonirali orderForm unutar state-a
+        const updatedOrderForm = {
+            ...this.state.orderForm
+        }
+        //Zatim smo klonirali odredjeni name unutar orderForm (name, email, address...)
+        const updatedFormElement = {
+            ...updatedOrderForm[inputIdentifier]
+        }
+        updatedFormElement.value = event.target.value
+        updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation)
+        //Posto smo u handleru koji ocitava vrijednosti koje je korisnik unio, kad unese prvi karakter
+        //znamo da je input polje "dirty"
+        updatedFormElement.touched = true;
+        updatedOrderForm[inputIdentifier] = updatedFormElement
+        console.log('[ContactData.js -> updatedFormElement', updatedFormElement)
+
+        let formIsValid = true;
+        //Provjeravamo sve inpute da li su validni ili ne
+        for(let inputIdentifier in updatedOrderForm){
+            //Ako su obe vrijednosti true vrati true,
+            //Ako je prva vrijednost false vrati false i smjesti je u formIsValid
+            //Kasnije cemo updatovati state na osnovu formIsValid
+            formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid
+        }
+        console.log('[ContactData -> formIsValid]', formIsValid)
+        this.setState({orderForm: updatedOrderForm, formIsValid: formIsValid})
+    }
+
+    //Handler vraca true ili false, da li je validan input ili ne
+    checkValidity = (value, rules) => {
+        let isValid = true
+        //Ako nemamo rules objekta vrati true
+        if(!rules){
+            return true
+        }
+        if(rules.required){
+            isValid = value.trim() !== '' && isValid
+        }
+        if(rules.minLength){
+            isValid = value.length >= rules.minLength && isValid
+        }
+        if(rules.maxLength){
+            isValid = value.length <= rules.maxLength && isValid
+        }
+        return isValid
+    }
+
     render() {
+
+        const formElementsArray = [];
+        for (let key in this.state.orderForm) {
+            formElementsArray.push({
+                id: key,
+                config: this.state.orderForm[key]
+            })
+        }
+
         let form = (
-            <form>
-                <input className={classes.Input} type="text" name="name" placeholder="Your Name" />
-                <input className={classes.Input} type="email" name="email" placeholder="Your Email" />
-                <input className={classes.Input} type="text" name="street" placeholder="Street" />
-                <input className={classes.Input} type="text" name="postal" placeholder="Postal Code" />
-                <Button btnType="Success" clicked={this.orderHandler}>ORDER</Button>
+            <form onSubmit={this.orderHandler}>
+                {
+                    formElementsArray.map(formElement => (
+                        <Input
+                            changed={(event) => this.inputChangedHandler(event, formElement.id)}
+                            key={formElement.id}
+                            invalid={!formElement.config.valid}
+                            elementType={formElement.config.elementType}
+                            shouldValidate={formElement.config.validation}
+                            touched={formElement.config.touched}
+                            //proslijedimo objekat koji u Input komponenti spreadamo
+                            elementConfig={formElement.config.elementConfig}
+                            value={formElement.config.value} />
+                    ))
+                }
+                <Button disabled={!this.state.formIsValid} btnType="Success" clicked={this.orderHandler}>ORDER</Button>
             </form>);
-            //U order handleru postavimo spinner na true, jer smo kliknuli na order button
-            //Kad dohvatimo podatke vratimo ga na false i zamjenimo spinner sa formom
         if (this.state.loading) {
             form = <Spinner />
         }

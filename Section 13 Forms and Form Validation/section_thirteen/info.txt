@@ -1,4 +1,4 @@
 UVIJEK RADIMO SA KOPIJOM OBJEKTA
-- (225 lekcija) prosljedjivanje podataka preko query params
-- (226 lekcija) contact form
-- (227 lekcija) prosljedjivanje informacija u drugu komponentu pomocu Rute -> render
+- (236 lekcija) genericko kreiranje inputa
+- (239 lekcija) select dropdown element tag konfigurisanje
+- (242 lekcija) validacija forme

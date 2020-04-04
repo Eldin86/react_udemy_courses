@@ -1,3 +1,4 @@
+//komponenta u kojoj dodajemo ingrediense, more i less dugmad
 import React from 'react';
 import classes from './BuildControl.module.css'
 
