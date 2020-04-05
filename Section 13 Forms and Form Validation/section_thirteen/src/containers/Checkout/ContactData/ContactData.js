@@ -58,6 +58,7 @@ class ContactData extends Component {
                 validation: {
                     //input polje ne smije biti prazno
                     required: true,
+                    //broj karaktera za Zip Cose (5 brojeva)
                     minLength: 5,
                     maxLength: 5
                 },
@@ -131,12 +132,19 @@ class ContactData extends Component {
         this.setState({ loading: true })
         const formData = {}
         for(let formElementIdentifier in this.state.orderForm){
+            //Smjestamo vrijednost iz svakog orderForm value objekta u formData
+            //{name: "aaa", street: "aaa", zipCode: "aaa", country: "aaa", email:"aaa", deliveryMethod: "fastest"} -> primjer
             formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value
+            console.log('[ContactData.js -> formData]', formData)
         }
+        //Objekat koji saljemo u bazu preko axios-a
         const order = {
             //this.props.ingredients su iz checkout komponente koje smo proslijedili u render metodu (Route)
+            //u bazi imamo ingredients, price i orderData vrijednosti
             ingredients: this.props.ingredients,
+            //Price takodjer iz checkout Komponente
             price: this.props.price,
+            //Podaci iz forme
             orderData: formData
         }
         axios.post('/orders.json', order)
@@ -161,7 +169,9 @@ class ContactData extends Component {
         const updatedFormElement = {
             ...updatedOrderForm[inputIdentifier]
         }
+        //Zamjenimo value unutar state-a sa novom value koju dobijemo iz inputa
         updatedFormElement.value = event.target.value
+        //Postavimo true ili false koju vraca checkValidity metoda
         updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation)
         //Posto smo u handleru koji ocitava vrijednosti koje je korisnik unio, kad unese prvi karakter
         //znamo da je input polje "dirty"
@@ -201,7 +211,6 @@ class ContactData extends Component {
     }
 
     render() {
-
         const formElementsArray = [];
         for (let key in this.state.orderForm) {
             formElementsArray.push({
@@ -217,12 +226,17 @@ class ContactData extends Component {
                         <Input
                             changed={(event) => this.inputChangedHandler(event, formElement.id)}
                             key={formElement.id}
+
                             invalid={!formElement.config.valid}
+                            //Tip inputa koji nam treba
                             elementType={formElement.config.elementType}
+                            //Objekat u kojem su validation atributi
                             shouldValidate={formElement.config.validation}
+                            //Da li je user vec unio karakter u polje
                             touched={formElement.config.touched}
                             //proslijedimo objekat koji u Input komponenti spreadamo
                             elementConfig={formElement.config.elementConfig}
+                            //value atribut unutar input elementa
                             value={formElement.config.value} />
                     ))
                 }

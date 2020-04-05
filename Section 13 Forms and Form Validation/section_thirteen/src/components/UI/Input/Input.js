@@ -9,7 +9,9 @@ const input = (props) => {
     let inputElement = null
     const inputClasses = [classes.InputElement]
     let validationError = null
+    //Ako su oba true, znaci da nije validan element i da je user vec unio karakter u input
     if(props.invalid && props.touched){
+        //Zatim ispisi error poruku
         validationError = <h5>Please enter a valid value!</h5>
     }
 
@@ -20,10 +22,12 @@ const input = (props) => {
     }
 
     //Ne smijemo da proslijedimo sa velikim slovom rijec (inputType) unutar switch?
+    //Na osnovu tipa inputa kreiramo element
     switch (props.elementType) {
         case ('input'):
             inputElement = <input
                 className={inputClasses.join(' ')}
+                //Spreadamo atribute koje imamo za odredjeni input type
                 {...props.elementConfig}
                 value={props.value} 
                 onChange={props.changed}/>
@@ -31,6 +35,7 @@ const input = (props) => {
         case ('textarea'):
             inputElement = <textarea
                 className={inputClasses.join(' ')}
+                //Spreadamo atribute koje imamo za odredjeni input type
                 {...props.elementConfig}
                 value={props.value} 
                 onChange={props.changed}/>
@@ -49,6 +54,7 @@ const input = (props) => {
         default:
             inputElement = <input
                 className={inputClasses.join(' ')}
+                //Spreadamo atribute koje imamo za odredjeni input type
                 {...props.elementConfig}
                 value={props.value} 
                 onChange={props.changed}/>
