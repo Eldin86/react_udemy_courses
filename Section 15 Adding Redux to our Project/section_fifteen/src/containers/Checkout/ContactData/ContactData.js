@@ -1,6 +1,7 @@
 //komponenta koja sadrzi kontakt formu prilikom narudzbe, ima svoj state
 import React, { Component } from 'react'
 import axios from '../../../axios-orders'
+import { connect } from 'react-redux'
 
 import Button from '../../../components/UI/Button/Button'
 import classes from './ContactData.module.css'
@@ -128,23 +129,16 @@ class ContactData extends Component {
     //Handler kojim saljemo podatke u bazu pri narudzbi nakon sto popunimo formu
     orderHandler = (event) => {
         event.preventDefault()
-        console.log('[ContactData.js -> ingredients]', this.props.ingredients)
+        console.log('[ContactData.js -> ingredients]', this.props.ings)
         this.setState({ loading: true })
         const formData = {}
-        for(let formElementIdentifier in this.state.orderForm){
-            //Smjestamo vrijednost iz svakog orderForm value objekta u formData
-            //{name: "aaa", street: "aaa", zipCode: "aaa", country: "aaa", email:"aaa", deliveryMethod: "fastest"} -> primjer
+        for (let formElementIdentifier in this.state.orderForm) {
             formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value
             console.log('[ContactData.js -> formData]', formData)
         }
-        //Objekat koji saljemo u bazu preko axios-a
         const order = {
-            //this.props.ingredients su iz checkout komponente koje smo proslijedili u render metodu (Route)
-            //u bazi imamo ingredients, price i orderData vrijednosti
-            ingredients: this.props.ingredients,
-            //Price takodjer iz checkout Komponente
+            ingredients: this.props.ings,
             price: this.props.price,
-            //Podaci iz forme
             orderData: formData
         }
         axios.post('/orders.json', order)
@@ -165,46 +159,37 @@ class ContactData extends Component {
         const updatedOrderForm = {
             ...this.state.orderForm
         }
-        //Zatim smo klonirali odredjeni name unutar orderForm (name, email, address...)
         const updatedFormElement = {
             ...updatedOrderForm[inputIdentifier]
         }
-        //Zamjenimo value unutar state-a sa novom value koju dobijemo iz inputa
         updatedFormElement.value = event.target.value
-        //Postavimo true ili false koju vraca checkValidity metoda
         updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation)
-        //Posto smo u handleru koji ocitava vrijednosti koje je korisnik unio, kad unese prvi karakter
-        //znamo da je input polje "dirty"
         updatedFormElement.touched = true;
         updatedOrderForm[inputIdentifier] = updatedFormElement
         console.log('[ContactData.js -> updatedFormElement', updatedFormElement)
 
         let formIsValid = true;
-        //Provjeravamo sve inpute da li su validni ili ne
-        for(let inputIdentifier in updatedOrderForm){
-            //Ako su obe vrijednosti true vrati true,
-            //Ako je prva vrijednost false vrati false i smjesti je u formIsValid
-            //Kasnije cemo updatovati state na osnovu formIsValid
+        for (let inputIdentifier in updatedOrderForm) {
             formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid
         }
         console.log('[ContactData -> formIsValid]', formIsValid)
-        this.setState({orderForm: updatedOrderForm, formIsValid: formIsValid})
+        this.setState({ orderForm: updatedOrderForm, formIsValid: formIsValid })
     }
 
     //Handler vraca true ili false, da li je validan input ili ne
     checkValidity = (value, rules) => {
         let isValid = true
         //Ako nemamo rules objekta vrati true
-        if(!rules){
+        if (!rules) {
             return true
         }
-        if(rules.required){
+        if (rules.required) {
             isValid = value.trim() !== '' && isValid
         }
-        if(rules.minLength){
+        if (rules.minLength) {
             isValid = value.length >= rules.minLength && isValid
         }
-        if(rules.maxLength){
+        if (rules.maxLength) {
             isValid = value.length <= rules.maxLength && isValid
         }
         return isValid
@@ -254,4 +239,11 @@ class ContactData extends Component {
     }
 }
 
-export default ContactData
+const mapStateToProps = state => {
+    return {
+        ings: state.ingredients,
+        price: state.totalPrice
+    }
+}
+
+export default connect(mapStateToProps)(ContactData)

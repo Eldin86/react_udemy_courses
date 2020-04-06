@@ -9,21 +9,12 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary'
 import axios from '../../axios-orders'
 import Spinner from '../../components/UI/Spinner/Spinner'
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler'
-
-const INGREDIENT_PRICES = {
-    salad: 0.5,
-    cheese: 0.4,
-    meat: 1.3,
-    bacon: 0.7
-}
+import {connect} from 'react-redux'
+import * as actionTypes from '../../store/actions'
 
 class BurgerBuilder extends Component {
 
     state = {
-        //ingredients su inicijlano su null, jer ih dohvacamo sa servera
-        ingredients: null,
-        totalPrice: 4,
-        purchasable: false,
         //Purchasing nam sluzi da prikazemo modal
         purchasing: false,
         //Kad je loading true pokaze se spinner
@@ -34,16 +25,16 @@ class BurgerBuilder extends Component {
 
     componentDidMount() {
         console.log('[BurgerBuilder.js] -> this.props', this.props)
-        axios.get('https://burger-projekat-ii.firebaseio.com/ingredients.json')
-            .then(response => {
-                this.setState({ ingredients: response.data })
-            })
-            .catch(error => {
-                this.setState({error: true})
-            })
+        // axios.get('https://burger-projekat-ii.firebaseio.com/ingredients.json')
+        //     .then(response => {
+        //         this.setState({ ingredients: response.data })
+        //     })
+        //     .catch(error => {
+        //         this.setState({error: true})
+        //     })
     }
 
-    //Enable ORDER NOW button kad dodamo jedan prozvod, disable kad nismo odabrali nista
+    //Enable vrati boolean u ovisnosti o broju ingredientsa
     updatePurchaseState = (ingredients) => {
         const sum = Object.keys(ingredients)
             .map(igKey => {
@@ -52,49 +43,8 @@ class BurgerBuilder extends Component {
             .reduce((sum, el) => {
                 return sum + el
             }, 0)
-        this.setState({ purchasable: sum > 0 })
-        console.log('[BurgerBuilder -> updatePurchaseState]:', sum)
-    }
-
-    //Handler za dodavanje ingredientsa na button
-    addIngredientHandler = (type) => {
-        const oldCount = this.state.ingredients[type];
-        console.log('[oldCount -> addIngredientHandler]', oldCount)
-        const updatedCount = oldCount + 1
-        const updatedIngredients = {
-            ...this.state.ingredients
-        }
-        updatedIngredients[type] = updatedCount
-        const priceAdition = INGREDIENT_PRICES[type];
-        const oldPrice = this.state.totalPrice
-        const newPrice = oldPrice + priceAdition
-        console.log('UPDATED INGREDIENTS ON ADDINGREDIENTHANDLER', updatedIngredients)
-        this.setState({
-            totalPrice: newPrice,
-            ingredients: updatedIngredients
-        })
-        this.updatePurchaseState(updatedIngredients)
-    }
-    //Handler za brisanje ingredienta na button
-    removeIngredientHandler = (type) => {
-        const oldCount = this.state.ingredients[type];
-        if (oldCount <= 0) {
-            return;
-        }
-        console.log('[oldCount -> addIngredientHandler]', oldCount)
-        const updatedCount = oldCount - 1
-        const updatedIngredients = {
-            ...this.state.ingredients
-        }
-        updatedIngredients[type] = updatedCount
-        const priceDeduction = INGREDIENT_PRICES[type];
-        const oldPrice = this.state.totalPrice
-        const newPrice = oldPrice - priceDeduction
-        this.setState({
-            totalPrice: newPrice,
-            ingredients: updatedIngredients
-        })
-        this.updatePurchaseState(updatedIngredients)
+            console.log('[BurgerBuilder -> updatePurchaseState]:', sum)
+        return sum > 0 
     }
 
     //handler kojim enable button za ORDER NOW
@@ -108,29 +58,13 @@ class BurgerBuilder extends Component {
     }
     //Handler kojim nastavljamo dalje narudzbu, CONTINUE button
     purchaseContinueHandler = () => {
-        //Niz koji sadrzi ingredientse koje smo narucili i koje cemo proslijediti preko history.push
-        const queryParams = [];
-        for(let i in this.state.ingredients){
-            //encodeURIComponent da enkodira podatke za url, white space, %20 i td
-            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]))
-        }
-        //Cijenu takodjer posljemo preko queryParams
-        queryParams.push('price=' + this.state.totalPrice)
-        //Join radimo da spojimo sve query parametre (bacon=0&cheese=4&meat=0&salad=4)
-        const queryString = queryParams.join('&')
-        console.log('[BurgerBuilder.js -> queryString]', queryString)
-
-        //Nakon sto kliknemo na CONTINUE odvede nas na Checkout -> CheckoutSummary komponentu
-        //Pushamo ingredientse koje smo narucili u search 
-        this.props.history.push({
-            pathname: '/checkout',
-            search: queryString
-        })
+       this.props.history.push('/checkout')
     }
 
     render() {
         const disabledInfo = {
-            ...this.state.ingredients
+            //Ings su iz redux-a, iz mapStateToProps
+            ...this.props.ings
         }
 
         for (let key in disabledInfo) {
@@ -142,22 +76,25 @@ class BurgerBuilder extends Component {
         let orderSummary = null;
 
         let burger = this.state.error ? <h1 style={{textAlign: 'center'}}>Ingredients can't be loaded</h1> : <Spinner />
-       if (this.state.ingredients) {
+       if (this.props.ings) {
             burger = (
                 <Auxiliary>
-                    <Burger ingredients={this.state.ingredients} />
+                    <Burger ingredients={this.props.ings} />
                     <BuildControls
-                        ingredientAdded={this.addIngredientHandler}
-                        ingredientRemoved={this.removeIngredientHandler}
+                    //mi vec proslijedjujemo ingredient name u onIngredientAdded i onIngredientRemoved metodu
+                    //unutar BuildControls komponente, kao ctrl.type argument
+                        ingredientAdded={this.props.onIngredientAdded}
+                        ingredientRemoved={this.props.onIngredientRemoved}
                         disabled={disabledInfo}
-                        price={this.state.totalPrice}
-                        purchasable={this.state.purchasable}
+                        price={this.props.price}
+                        //Ovdje pokrenemo funkciju zato da dobijemo uvijek vrijednost true ili false
+                        purchasable={this.updatePurchaseState(this.props.ings)}
                         ordered={this.purchaseHandler} />
                 </Auxiliary>
             )
             orderSummary = <OrderSummary
-                price={this.state.totalPrice}
-                ingredients={this.state.ingredients}
+                price={this.props.price}
+                ingredients={this.props.ings}
                 purchaseCancelled={this.purchaseCancelHandler}
                 purchaseContinued={this.purchaseContinueHandler} />
 
@@ -180,7 +117,25 @@ class BurgerBuilder extends Component {
         )
     }
 }
+
+const mapStateToProps = state => {
+    return {
+        //Dohvatili smo ingredientse iz reduxa i spremili ih u ings
+        ings: state.ingredients,
+        price: state.totalPrice
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        //ingName je vrijenost koju proslijedimo u metodu onIngredientAdded, a koja se sprema u 
+        //ingredientName property i saljemo u redux
+        onIngredientAdded: (ingName) => dispatch({type: actionTypes.ADD_INGREDIENT, ingredientName:ingName}),
+        onIngredientRemoved: (ingName) => dispatch({type: actionTypes.REMOVE_INGREDIENT, ingredientName:ingName})
+    }
+}
+
 //Proslijedili smo komponentu kao argument da bismo je mogli vratiti nazad i ponovo normlano koristiti?
-export default withErrorHandler(BurgerBuilder, axios)
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios))
 
  
