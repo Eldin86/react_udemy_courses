@@ -1,0 +1,1 @@
+- (270 lekcija) kombinacija user inputa sa redux state-om odnosno spremanje vrijednosti iz inputa u redux state
