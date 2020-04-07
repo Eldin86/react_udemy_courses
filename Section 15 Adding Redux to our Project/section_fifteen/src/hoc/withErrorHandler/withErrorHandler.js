@@ -53,6 +53,7 @@ const withErrorHandler = (WrappedComponent, axios) => {
                     {/* distribuiramo sve props koje komponenta koju proslijedimo ima */}
                     {/* spreadali smo props da bi mogli proslijediti props drugoj komponenti koju omotava 
                     ova HOC, i da bi mogli koristiti te props */}
+                    {/* ...this.props postavimo da mozemo dalje proslijediti props u drugu komponentu koju omotava ova HOC */}
                     <WrappedComponent {...this.props} />
                 </Auxiliary>
             )

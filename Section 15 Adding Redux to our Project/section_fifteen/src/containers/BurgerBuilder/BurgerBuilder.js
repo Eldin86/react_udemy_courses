@@ -9,6 +9,7 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary'
 import axios from '../../axios-orders'
 import Spinner from '../../components/UI/Spinner/Spinner'
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler'
+//konektujemo redux sa reactom
 import {connect} from 'react-redux'
 import * as actionTypes from '../../store/actions'
 
@@ -44,6 +45,7 @@ class BurgerBuilder extends Component {
                 return sum + el
             }, 0)
             console.log('[BurgerBuilder -> updatePurchaseState]:', sum)
+            //Ako je suma veca od 0 vrati true, ako je 0 vrati false, posto je 1 true, 0 false
         return sum > 0 
     }
 
@@ -81,8 +83,9 @@ class BurgerBuilder extends Component {
                 <Auxiliary>
                     <Burger ingredients={this.props.ings} />
                     <BuildControls
-                    //mi vec proslijedjujemo ingredient name u onIngredientAdded i onIngredientRemoved metodu
+                    //mi vec prosljedjujemo ingredient name u onIngredientAdded i onIngredientRemoved metodu
                     //unutar BuildControls komponente, kao ctrl.type argument
+                    //iz child komponente smo poslali ingName u onIngredientAdded i onIngredientRemoved
                         ingredientAdded={this.props.onIngredientAdded}
                         ingredientRemoved={this.props.onIngredientRemoved}
                         disabled={disabledInfo}
@@ -120,7 +123,7 @@ class BurgerBuilder extends Component {
 
 const mapStateToProps = state => {
     return {
-        //Dohvatili smo ingredientse iz reduxa i spremili ih u ings
+        //Dohvatili smo ingredientse i totalPrice iz reduxa i spremili ih u ings
         ings: state.ingredients,
         price: state.totalPrice
     }
@@ -129,7 +132,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         //ingName je vrijenost koju proslijedimo u metodu onIngredientAdded, a koja se sprema u 
-        //ingredientName property i saljemo u redux
+        //ingredientName je property u redux.u i dodjelimo mu vrijednosti ingName iz komponente
+        //onIngredientAdded i onIngredientRemoved su reference na actionse u reduxu.
         onIngredientAdded: (ingName) => dispatch({type: actionTypes.ADD_INGREDIENT, ingredientName:ingName}),
         onIngredientRemoved: (ingName) => dispatch({type: actionTypes.REMOVE_INGREDIENT, ingredientName:ingName})
     }

@@ -5,12 +5,15 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom'
 
+//redux related
 import { Provider } from 'react-redux'
 import {createStore} from 'redux'
 import reducer from './store/reducer'
 
+//kreiramo store i povezemo ga sa reducerom
 const store = createStore(reducer)
 
+//trebamo obratiti paznju da connect i routing funkcionalnosti rade savrseno
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>

@@ -1,0 +1,28 @@
+.CounterOutput {
+    width: 100%;
+    background-color: #fa923f;
+    color: white;
+    font-size: 1.8rem;
+    text-align: center;
+    padding: 20px 0;
+    box-sizing: border-box;
+}
+
+.Danger:hover,
+.Danger:active {
+    background-color: rgb(194, 0, 0);
+    transition: background-color .4s ease-in-out
+}
+.Success:hover,
+.Success:active {
+    background-color: rgb(0, 119, 0);
+    transition: background-color .4s ease-in-out
+}
+.Danger{
+    background-color: rgb(145, 0, 0);
+    color: white;
+}
+.Success{
+    background-color: rgb(0, 78, 0);
+    color: white;
+}

@@ -6,6 +6,7 @@ const INGREDIENT_PRICES = {
     meat: 1.3,
     bacon: 0.7
 }
+//inicijalni state
 const initialState = {
     ingredients: {
         salad: 0,
@@ -23,11 +24,17 @@ const reducer = (state = initialState, action) => {
                 //prvo kopiramo state objekat
                 ...state,
                 ingredients: {
-                    //Zatim kopiramo ingredients objekat, posto je nested, a spread radi shallow copy
+                    //Zatim kopiramo ingredients objekat, posto je nested unutar state-a, jer spread radi shallow copy
                     ...state.ingredients,
-                    //[action.ingredientName] -> Dinamicki overwrite property unutar objekta
+                    //[action.ingredientName] -> Dinamicki (kreiramo) overwrite property unutar objekta
                     //state.ingredients[action.ingredientName] -> vrijednost ingredienta
                     [action.ingredientName]: state.ingredients[action.ingredientName] + 1
+                    
+                    //const num = 'dva';
+                    // const obj = {
+                    //     [num]: 'tri'
+                    // }
+                    // console.log(obj) -> dva: 'tri'
                 },
                 totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
             }
