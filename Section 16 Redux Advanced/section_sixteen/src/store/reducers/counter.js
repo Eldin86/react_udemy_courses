@@ -1,6 +1,6 @@
 //Ovo je file koji cemo exportovati reducer koji koristimo
 //actionTypes je objekat posto smo ih sve exportovali, named export, tako da dobijemo objekat
-import * as actionTypes from '../actions'
+import * as actionTypes from '../actions/actions'
 //REDUCER
 const initialState = {
     counter: 0

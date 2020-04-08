@@ -2,9 +2,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-//combineReducers funkcija kojom mergamo reducerse u jedan
-import {createStore, combineReducers} from 'redux'
-//import reducer from './store/reducer'
+//dedaultna compose funkcija koju nam daje redux, to je slicno kao combineReducers, compose sluzi
+//da kombiniramo enhancers(enhancer je devtool?)
+import {createStore, combineReducers, applyMiddleware, compose} from 'redux'
 import counterReducer from './store/reducers/counter'
 import resultReducer from './store/reducers/result'
 import  {Provider} from 'react-redux'
@@ -14,17 +14,36 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 const reducer = combineReducers({
-  //preko ctr i res propertijima radimo u drugim komponentama
   ctr: counterReducer,
   res: resultReducer
 })
 
-//proslijedili smo reducer u store
-const store = createStore(reducer);
+//MIDDLEWARE
+//middleware prima store kao input
+const logger = store => {
+  //Vratimo novu funkciju koja prima next argument, next omogucava da actions idu dalje do reducera
+  return next => {
+    //funkcija vraca drugu funkciju koja prima action kao input
+    return action => {
+      //Unutar ovih funkcija mozemo da dohvaitimo store, next i action
+      //Ovdje izvrsavamo kod koji zelimo da se pokrene izmedju action i reducera
+      console.log('[index.js -> middleware Dispatching]', action)
+      //Zatim izvrsimo next da bi dozvolili actionu da dodje do reducera, ali mu moramo proslijediti action
+      const result = next(action);
+      console.log('[index.js -> middleware -> next state]', store.getState())
+      return result
+    }
+  }
+}
 
-//Intaliramo react-redux paket i koristimo Provider da bismo povezali redux sa reactom
-//Provider je helper komponenta koja pomaze da inject store u react komponente
-//U provider prostavimo atribut store a u taj atribut proslijedimo store (createStore(reducer) )
+//composeEnhancers sluzi da povezemo browser sa redux-store-om
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+//u createStore proslijedimo middleware pomocu applyMiddleware metode, mozemo listu middleware-a
+//proslijediti unutar applyMiddleware
+//composeEnhancers sluzi da povezemo browser sa redux-store-om
+const store = createStore(reducer, composeEnhancers(applyMiddleware(logger)));
+
 ReactDOM.render(
   <Provider store={store}>
     <App />
