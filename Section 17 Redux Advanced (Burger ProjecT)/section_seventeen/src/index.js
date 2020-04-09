@@ -4,14 +4,17 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom'
+import thunk from 'redux-thunk'
 
 //redux related
 import { Provider } from 'react-redux'
-import {createStore} from 'redux'
-import reducer from './store/reducer'
+import {createStore, applyMiddleware, compose} from 'redux'
+import burgerBuilderReducer from './store/reducers/burgerBuilder'
 
-//kreiramo store i povezemo ga sa reducerom
-const store = createStore(reducer)
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+//kreiramo store i povezemo ga sa reducerom, takodjer koristimo redux devtools
+const store = createStore(burgerBuilderReducer, composeEnhancers(applyMiddleware(thunk)))
 
 //trebamo obratiti paznju da connect i routing funkcionalnosti rade savrseno
 ReactDOM.render(

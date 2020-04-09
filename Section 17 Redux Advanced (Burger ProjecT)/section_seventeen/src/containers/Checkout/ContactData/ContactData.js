@@ -14,114 +14,85 @@ class ContactData extends Component {
         //konfigurisemo sva polja i vrijednosti
         orderForm: {
             name: {
-                //Input element
                 elementType: 'input',
-                //konfiguracijski atribut za odabrani tag element
                 elementConfig: {
                     type: 'text',
                     placeholder: 'Your Name'
                 },
                 value: '',
                 validation: {
-                    //input polje ne smije biti prazno
                     required: true
                 },
                 valid: false,
-                //Provjeravamo da li je user vec unio ista u input ili ne
                 touched: false
             },
             street: {
-                //Input element
                 elementType: 'input',
-                //konfiguracijski atribut za odabrani tag element
                 elementConfig: {
                     type: 'text',
                     placeholder: 'Street'
                 },
                 value: '',
                 validation: {
-                    //input polje ne smije biti prazno
                     required: true
                 },
                 valid: false,
-                //Provjeravamo da li je user vec unio ista u input ili ne
                 touched: false
             },
             zipCode: {
-                //Input element
                 elementType: 'input',
-                //konfiguracijski atribut za odabrani tag element
                 elementConfig: {
                     type: 'text',
                     placeholder: 'ZIP Code'
                 },
                 value: '',
                 validation: {
-                    //input polje ne smije biti prazno
                     required: true,
-                    //broj karaktera za Zip Cose (5 brojeva)
                     minLength: 5,
                     maxLength: 5
                 },
                 valid: false,
-                //Provjeravamo da li je user vec unio ista u input ili ne
                 touched: false
             },
             country: {
-                //Input element
                 elementType: 'input',
-                //konfiguracijski atribut za odabrani tag element
                 elementConfig: {
                     type: 'text',
                     placeholder: 'Country'
                 },
                 value: '',
                 validation: {
-                    //input polje ne smije biti prazno
                     required: true
                 },
                 valid: false,
-                //Provjeravamo da li je user vec unio ista u input ili ne
                 touched: false
             },
             email: {
-                //Input element
                 elementType: 'email',
-                //konfiguracijski atribut za odabrani tag element
                 elementConfig: {
                     type: 'text',
                     placeholder: 'Your Email'
                 },
                 value: '',
                 validation: {
-                    //input polje ne smije biti prazno
                     required: true
                 },
                 valid: false,
-                //Provjeravamo da li je user vec unio ista u input ili ne
                 touched: false
             },
             deliveryMethod: {
-                //Select element
                 elementType: 'select',
-                //konfiguracijski atribut za odabrani tag element
-                //njega smo dalje rijesili u Input komponenti
                 elementConfig: {
-                    //Options su niz objekata, odnosno vrijednosti za select tag
                     options: [
                         { value: 'fastest', displayValue: 'Fastest' },
                         { value: 'cheapest', displayValue: 'Cheapest' }
                     ]
                 },
-                //defaultnu vrijednost smo postavili, jer kad submitamo formu bez promjene value
-                //u bazu ce upisti kao '', tek kad izaberemo drugu opciju onda ce biti u redu
                 value: 'fastest',
                 validation: {},
-                //Stavili smo ovo polje uvijek da bude true
                 valid: true
             }
         },
-        //Provjeravamo da li je forma validna, da mozemo disable enable button na formi
         formIsValid: false,
         loading: false
     }
