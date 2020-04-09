@@ -20,7 +20,6 @@ const reducer = (state = initialState, action) => {
             console.log('[result.js results Array]', state.results.value)
             return updateObject(state, {results: state.results.concat( { value: action.result, id: new Date() } )})
         case actionTypes.DELETE_RESULT:
-           
             return deleteResult(state, action)
         default: ;
     }

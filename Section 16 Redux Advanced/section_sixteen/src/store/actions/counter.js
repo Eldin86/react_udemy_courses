@@ -19,7 +19,7 @@ export const decrement = () => {
     }
 }
 
-//value je vrijednost koju smo poslali iz komponente preko action-a
+//value je vrijednost koju smo poslali iz komponente preko action-a u reducer
 export const add = (value) => {
     return {
         type: actionTypes.ADD,
