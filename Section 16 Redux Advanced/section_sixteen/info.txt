@@ -1,6 +1,2 @@
-- (259 lekcija) konektovanje store to redux
-- (260 lekcija) dispatching actions iz komponente
-- (263 lekcija) updating state immutably (concat metoda za dodavanje u niz)
-- (264 lekcija) updating arrays immutably (filter metoda za brisanje iz niza)
-- (265 lekcija) immutable update patterns
-- (267 lekcija) koristenje multiple reducera i combining them
+- (285 lekcija) redux devtools podesavanje
+- (289 lekcija) koristenje asinhronog koda, koristeci redux-thunk

@@ -8,6 +8,11 @@ import {createStore, combineReducers, applyMiddleware, compose} from 'redux'
 import counterReducer from './store/reducers/counter'
 import resultReducer from './store/reducers/result'
 import  {Provider} from 'react-redux'
+//thunk je library koji dodaje middleware projketu, sto dozvoljava action creatorsima, da ne vrate
+//sami action nego da vrate action koja ce kasnije dispatchati action, tako mozemo da koristimo asinhroni kod,
+//Moramo ga dodati u applyMiddleware
+//thunk jest middleware
+import thunk from 'redux-thunk'
 
 import './index.css';
 import App from './App';
@@ -42,7 +47,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 //u createStore proslijedimo middleware pomocu applyMiddleware metode, mozemo listu middleware-a
 //proslijediti unutar applyMiddleware
 //composeEnhancers sluzi da povezemo browser sa redux-store-om
-const store = createStore(reducer, composeEnhancers(applyMiddleware(logger)));
+const store = createStore(reducer, composeEnhancers(applyMiddleware(logger, thunk)));
 
 ReactDOM.render(
   <Provider store={store}>
