@@ -8,13 +8,19 @@ import thunk from 'redux-thunk'
 
 //redux related
 import { Provider } from 'react-redux'
-import {createStore, applyMiddleware, compose} from 'redux'
+import {createStore, applyMiddleware, compose, combineReducers} from 'redux'
 import burgerBuilderReducer from './store/reducers/burgerBuilder'
+import orderReducer from './store/reducers/order'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
+const rootReducer = combineReducers({
+  burgerBuilder: burgerBuilderReducer,
+  order: orderReducer
+})
+
 //kreiramo store i povezemo ga sa reducerom, takodjer koristimo redux devtools
-const store = createStore(burgerBuilderReducer, composeEnhancers(applyMiddleware(thunk)))
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)))
 
 //trebamo obratiti paznju da connect i routing funkcionalnosti rade savrseno
 ReactDOM.render(

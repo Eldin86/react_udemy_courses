@@ -11,28 +11,19 @@ import Spinner from '../../components/UI/Spinner/Spinner'
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler'
 //konektujemo redux sa reactom
 import { connect } from 'react-redux'
-import * as burgerBuilderActions from '../../store/actions/index'
+import * as actions from '../../store/actions/index'
 
 class BurgerBuilder extends Component {
 
     state = {
         //Purchasing nam sluzi da prikazemo modal
-        purchasing: false,
-        //Kad je loading true pokaze se spinner
-        loading: false,
-        //na osnovu errora ispisujemo poruku ukoliko ga ima
-        error: false
+        purchasing: false
     }
 
     componentDidMount() {
+        //Kad se komponenta mounta pokrene se onInitIngredients metoda koja dohvaca podatke sa servera
         console.log('[BurgerBuilder.js] -> this.props', this.props)
-        axios.get('https://burger-projekat-ii.firebaseio.com/ingredients')
-            .then(response => {
-                
-            })
-            .catch(error => {
-                this.setState({error: true})
-            })
+        this.props.onInitIngredients()
     }
 
     //Enable vrati boolean u ovisnosti o broju ingredientsa
@@ -60,6 +51,7 @@ class BurgerBuilder extends Component {
     }
     //Handler kojim nastavljamo dalje narudzbu, CONTINUE button
     purchaseContinueHandler = () => {
+        this.props.onInitPurchase()
         this.props.history.push('/checkout')
     }
 
@@ -76,7 +68,7 @@ class BurgerBuilder extends Component {
 
         let orderSummary = null;
 
-        let burger = this.state.error ? <h1 style={{ textAlign: 'center' }}>Ingredients can't be loaded</h1> : <Spinner />
+        let burger = this.props.error ? <h1 style={{ textAlign: 'center' }}>Ingredients can't be loaded</h1> : <Spinner />
         if (this.props.ings) {
             burger = (
                 <Auxiliary>
@@ -98,10 +90,6 @@ class BurgerBuilder extends Component {
 
 
         }
-        if (this.state.loading) {
-            orderSummary = <Spinner />
-        }
-
 
         return (
             <Auxiliary>
@@ -116,15 +104,18 @@ class BurgerBuilder extends Component {
 
 const mapStateToProps = state => {
     return {
-        ings: state.ingredients,
-        price: state.totalPrice
+        ings: state.burgerBuilder.ingredients,
+        price: state.burgerBuilder.totalPrice,
+        error: state.burgerBuilder.error
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onIngredientAdded: (ingName) => dispatch(burgerBuilderActions.addIngredient(ingName)),
-        onIngredientRemoved: (ingName) => dispatch(burgerBuilderActions.removeIngredient(ingName))
+        onIngredientAdded: (ingName) => dispatch(actions.addIngredient(ingName)),
+        onIngredientRemoved: (ingName) => dispatch(actions.removeIngredient(ingName)),
+        onInitIngredients: () => dispatch(actions.initIngredients()),
+        onInitPurchase: () => dispatch(actions.purchaseInit())
     }
 }
 

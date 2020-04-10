@@ -1,48 +1,48 @@
 import React, { Component } from 'react'
 import axios from '../../axios-orders'
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler'
+import { connect } from 'react-redux'
 
 import Order from '../../components/Order/Order'
+import * as actions from '../../store/actions/index'
+import Spinner from '../../components/UI/Spinner/Spinner'
 
 class Orders extends Component {
 
-    state = {
-        orders: [],
-        loading: true
-    }
-
-    componentDidMount(){
-        axios.get('/orders.json')
-            .then(response => {
-                console.log('[Orders.js -> response.data]', response.data)
-                const fetchedOrders = [];
-                for(let key in response.data){
-                    fetchedOrders.push({
-                        //spreadamo objekat koji dohvatimo iz firebase
-                        ...response.data[key],
-                        //Dodamo i key vrijednost u objekat
-                        id: key
-                    })
-                    this.setState({loading: false, orders: fetchedOrders})
-                }
-
-            }).catch(error => {
-                this.setState({loading: false})
-            })
+    componentDidMount() {
+        this.props.onFetchOrders()
     }
     render() {
-        return (
-            <div>
-                {this.state.orders.map(order => (
-                    <Order 
+        let orders = <Spinner />
+        if (!this.props.loading) {
+            orders = (this.props.orders.map(order => (
+                <Order
                     key={order.id}
                     ingredients={order.ingredients}
-                    price={order.price}/>
-                ))}
+                    price={order.price} />
+            ))
+            )
+        }
+        return (
+            <div>
+                {orders}
             </div>
         )
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        orders: state.order.orders,
+        loading: state.order.loading
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onFetchOrders: () => dispatch(actions.fetchOrders())
+    }
+}
+
 //Proslijedimo komponentu u HOC koja ima interceptore
-export default withErrorHandler(Orders, axios)
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Orders, axios))
