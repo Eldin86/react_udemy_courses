@@ -1,7 +1,9 @@
 import * as actionTypes from './actionTypes'
 import axios from '../../axios-orders'
 
+/////////////////////////////////////////////
 //sinhroni action creator
+//dohvatimo id koji je kreiran u backendu odnosno u bazi i podatke za order
 export const purchaseBurgerSuccess = (id, orderData) => {
     return {
         type: actionTypes.PURCHASE_BURGER_SUCCESS,
@@ -39,6 +41,8 @@ export const purchaseBurger = (orderData) => {
             })
     }
 }
+//////////////////////////////////////
+
 
 export const purchaseInit = () => {
     return {
@@ -46,6 +50,8 @@ export const purchaseInit = () => {
     }
 }
 
+
+///////////////////////////////////////////////////
 export const fetchOrdersSuccess = (orders) => {
     return {
         type: actionTypes.FETCH_ORDERS_SUCCESS,
@@ -88,3 +94,4 @@ export const fetchOrders = () => {
             })
     }
 }
+/////////////////////////////////////////////////////////

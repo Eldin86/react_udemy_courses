@@ -8,6 +8,7 @@ import thunk from 'redux-thunk'
 
 //redux related
 import { Provider } from 'react-redux'
+//compose nam omogucava da compose niz enhancera
 import {createStore, applyMiddleware, compose, combineReducers} from 'redux'
 import burgerBuilderReducer from './store/reducers/burgerBuilder'
 import orderReducer from './store/reducers/order'

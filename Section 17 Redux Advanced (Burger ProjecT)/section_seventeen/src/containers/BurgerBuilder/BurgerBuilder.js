@@ -114,6 +114,7 @@ const mapDispatchToProps = dispatch => {
     return {
         onIngredientAdded: (ingName) => dispatch(actions.addIngredient(ingName)),
         onIngredientRemoved: (ingName) => dispatch(actions.removeIngredient(ingName)),
+        //dohvatamo ingredientse sa servera
         onInitIngredients: () => dispatch(actions.initIngredients()),
         onInitPurchase: () => dispatch(actions.purchaseInit())
     }

@@ -2,6 +2,7 @@ import * as actionTypes from '../actions/actionTypes'
 import { updateObject } from '../utility'
 
 const initalState = {
+    //Ordersi koje imamo u bazi
     orders: [],
     //da li smo u procesu narucivanja ili smo gotovi
     loading: false,
@@ -15,7 +16,9 @@ const purchaseBurgerStart = (state, action) => {
 }
 const purchaseBurgerSuccess = (state, action) => {
     return updateObject(state, {
+        //orderse koje smo dohvatili smjestimo u niz
         orders: action.orders,
+        //smjestimo loading na false jer smo zavrsili sa dohvatanjem ordersa
         loading: false
     })
 }

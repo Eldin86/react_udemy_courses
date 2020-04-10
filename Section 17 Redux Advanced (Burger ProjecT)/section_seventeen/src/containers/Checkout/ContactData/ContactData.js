@@ -90,6 +90,7 @@ class ContactData extends Component {
                         { value: 'cheapest', displayValue: 'Cheapest' }
                     ]
                 },
+                //Ako ne promjenimo u select opciji vrijednost ostat ce prazno, zato moramo defaultno staviti vrijednost
                 value: 'fastest',
                 validation: {},
                 valid: true
@@ -113,6 +114,7 @@ class ContactData extends Component {
             price: this.props.price,
             orderData: formData
         }
+        //posaljemo sve informacije u bazu preko onOrderBurger metode
         this.props.onOrderBurger(order)
     }
 

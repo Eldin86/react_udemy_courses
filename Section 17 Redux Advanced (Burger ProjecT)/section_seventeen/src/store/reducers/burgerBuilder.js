@@ -11,6 +11,7 @@ const INGREDIENT_PRICES = {
 const initialState = {
     ingredients: null,
     totalPrice: 4,
+    //error u slucaju da nismo dohvatili podatke sa servera, ili ako imamo neku komplikaciju
     error: false
 }
 
@@ -42,10 +43,12 @@ const setIngredients = (state, action) => {
         },
         //resetujemo price na pocetnu vrijednost
         totalPrice: 4,
+        //resetujemo error na false, ukoliko smo uspjesno dohvatili podatke a imali smo prije error
         error: false
     })
 }
 const fetchIngredientsFailed = (state, action) => {
+    //ukoliko nije uspjelo dohvatanje podataka postavi error na true, da izbaci poruku
     return updateObject(state, {error: true})
 }
 
@@ -54,7 +57,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.ADD_INGREDIENT: return addIngredient(state, action)
            
         case actionTypes.REMOVE_INGREDIENT: return removeIngredient(state, action)
-           
+           //izvrsi se kad dobijemo ingredientse sa servera
         case actionTypes.SET_INGREDIENTS: return setIngredients(state, action)
             
         case actionTypes.FETCH_INGREDIENTS_FAILED: return fetchIngredientsFailed(state, action)
