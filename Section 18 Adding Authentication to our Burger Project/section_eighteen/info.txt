@@ -1,4 +1,13 @@
 UVIJEK RADIMO SA KOPIJOM OBJEKTA
-- (236 lekcija) genericko kreiranje inputa
-- (239 lekcija) select dropdown element tag konfigurisanje
-- (242 lekcija) validacija forme
+- (325 lekcija) dohvacanje tokena iz backenda, firebase
+- (336 lekcija) spremanje tokena u localStorage i login usera prilikom refresha ili ponovne posjete stranici i provjera da li je token istekao
+- (339 lekcija) guarding pages
+
+//LEKCIJA 334 REDIRECTING THE USER TO THE CHECKOUT PAGE 
+
+zelimo da kad kreiramo burger da nas prelinuje na signup page jer nismo registrovani, zatim nakon
+sto se registrujemo ili logujemo da nas redirecta na checkout page sa authenticate page, tako da
+mozemo da nastavimo sa burgerom checkout.
+da bismo to uradili moramo da spasimo neke informacije u redux store, tipa da li kreiramo burger, i resetiramo
+ga ponovo kad user posjeti burger builder page
+

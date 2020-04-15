@@ -12,7 +12,10 @@ const initialState = {
     ingredients: null,
     totalPrice: 4,
     //error u slucaju da nismo dohvatili podatke sa servera, ili ako imamo neku komplikaciju
-    error: false
+    error: false,
+    //da li smo u procesu pravljenja burgera ili ne
+    //na true postavljamo kad dodajemo ili uklanjamo ingredient, odnoson kad radimo na burgeru
+    building: false
 }
 
 const addIngredient = (state, action) => {
@@ -20,7 +23,10 @@ const addIngredient = (state, action) => {
     const updatedIngredients = updateObject(state.ingredients, updatedIngredient)
     const updatedState = {
         ingredients: updatedIngredients,
-        totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
+        totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName],
+        //Smjestamo na true jer smo kliknuli na dugme da dodamo sastojak za burger,
+        //odnosno u procesu smo kreiranja burgera
+        building: true
     }
     return updateObject(state, updatedState)
 }
@@ -29,10 +35,14 @@ const removeIngredient = (state, action) => {
     const updatedIngs = updateObject(state.ingredients, updatedIng)
     const updatedSt = {
         ingredients: updatedIngs,
-        totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName]
+        totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName],
+        //Smjestamo na true jer smo kliknuli na dugme da uklonimo sastojak za burger,
+        //odnosno u procesu smo kreiranja burgera
+        building: true
     }
     return updateObject(state, updatedSt)
 }
+//setIngredients se postavljaju kad tek loadiramo page, odnosno kad tek posjetimo burgerBuilder
 const setIngredients = (state, action) => {
     return updateObject(state, {
         ingredients: {
@@ -44,7 +54,9 @@ const setIngredients = (state, action) => {
         //resetujemo price na pocetnu vrijednost
         totalPrice: 4,
         //resetujemo error na false, ukoliko smo uspjesno dohvatili podatke a imali smo prije error
-        error: false
+        error: false,
+        //false smo postavili jer smo reload page, i pocinjemo ispocetka sa kreiranjem burgera
+        building: false
     })
 }
 const fetchIngredientsFailed = (state, action) => {
@@ -57,7 +69,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.ADD_INGREDIENT: return addIngredient(state, action)
            
         case actionTypes.REMOVE_INGREDIENT: return removeIngredient(state, action)
-           //izvrsi se kad dobijemo ingredientse sa servera
+           //izvrsi se kad dobijemo ingredientse sa servera, znaci da postavljamo ingredientse
         case actionTypes.SET_INGREDIENTS: return setIngredients(state, action)
             
         case actionTypes.FETCH_INGREDIENTS_FAILED: return fetchIngredientsFailed(state, action)

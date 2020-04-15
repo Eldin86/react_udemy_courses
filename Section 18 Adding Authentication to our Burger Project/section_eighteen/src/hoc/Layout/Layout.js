@@ -1,6 +1,7 @@
 //Komponenta sadrzi toolbar i burger kontrole, sidebar za mobitele
 //Sadrzi metodu koja sluzi za otvaranje i zatvaranje side bar navigacije i backdrop
 import React, {Component} from 'react';
+import {connect} from 'react-redux'
 
 import Auxiliary from '../Auxiliary/Auxiliary'
 import classes from './Layout.module.css'
@@ -21,10 +22,11 @@ class Layout extends Component {
     }
 
     render(){
+        console.log('[Layout.js -> isAuthenticated]', this.props.isAuthenticated)
         return (
             <Auxiliary>
-                <Toolbar openSidebar={this.sideDrawerOpenHandler}/>
-                <SideDrawer open={this.state.showSideDrawer} closed={this.sideDrawerClosedHanlder}/>
+                <Toolbar isAuth={this.props.isAuthenticated} openSidebar={this.sideDrawerOpenHandler}/>
+                <SideDrawer isAuth={this.props.isAuthenticated} open={this.state.showSideDrawer} closed={this.sideDrawerClosedHanlder}/>
                 <main className={classes.Content}>
                     {this.props.children}
                 </main>
@@ -33,4 +35,11 @@ class Layout extends Component {
     }
 }
 
-export default Layout
+const mapStateToProps = state => {
+    return {
+        //Ako token razlicito null onda smo authenticated odnosno true
+        isAuthenticated: state.auth.token !== null
+    }
+}
+
+export default connect(mapStateToProps)(Layout)
