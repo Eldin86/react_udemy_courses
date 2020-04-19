@@ -1,0 +1,4 @@
+UVIJEK RADIMO SA KOPIJOM OBJEKTA
+- (357,358, 359 lekcija) testiranje komponenti
+- (360 lekcija) testiranje containers
+- (361 lekcija) testiranje redux
