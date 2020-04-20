@@ -10,4 +10,66 @@
     top: 30%;
     left: 25%;
     width: 50%;
+    transition: all 0.3s ease-out;
+}
+.ModalOpen{
+    animation: openModal 0.4s ease-out forwards
+}
+
+.ModalClosed{
+    pointer-events: none;
+    animation: closeModal 1s ease-out forwards
+}
+/*fade-slide je prefix koji smo oznacili u CSSTransition u classNames 
+i ove ce se klase dodati elementu koji omotava CSSTransition komponenta, u ovistnosti od transition
+state-a*/
+.fade-slide-enter{
+
+}
+/*-active je mjesto gdje se animacija odvija*/
+.fade-slide-enter-active{
+    animation: openModal 0.4s ease-out forwards
+}
+.fade-slide-exit{
+    
+}
+.fade-slide-exit-active{
+    animation: closeModal 1s ease-out forwards
+}
+@keyframes openModal{
+    0%{
+        pointer-events: auto;
+        opacity: 0;
+        transform: translateY(-100%)
+    }
+    50%{
+        /*https://developer.mozilla.org/en-US/docs/Web/CSS/pointer-events*/
+        pointer-events: auto;
+        opacity: 1;
+        transform: translateY(20%)
+    }
+    100%{    
+        pointer-events: auto;
+        opacity: 1;
+        transform: translateY(0)
+    }
+}
+
+@keyframes closeModal{
+    0%{
+        pointer-events: none;
+        opacity: 1;
+        transform: translateY(0)
+    }
+    50%{
+        /*https://developer.mozilla.org/en-US/docs/Web/CSS/pointer-events*/
+        pointer-events: none;
+        opacity: .8;
+        transform: translateY(60%)
+    }
+    100%{    
+        pointer-events: none;
+        opacity: 0;
+        transform: translateY(-100%)
+    }
 }
