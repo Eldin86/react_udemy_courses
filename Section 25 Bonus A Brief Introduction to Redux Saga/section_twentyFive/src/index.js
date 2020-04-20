@@ -15,7 +15,7 @@ import burgerBuilderReducer from './store/reducers/burgerBuilder'
 import orderReducer from './store/reducers/order'
 import authReducer from './store/reducers/auth'
 //importujemo logout saga
-import {logout} from './store/sagas/auth'
+import {watchAuth, watchBurgerBuilder, watchOrder} from './store/sagas/index'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -25,7 +25,13 @@ const rootReducer = combineReducers({
   auth: authReducer
 })
 
-const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)))
+const sagaMiddleware = createSagaMiddleware()
+//i sagas proslijedimo u applyMiddleware
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk, sagaMiddleware)))
+//Pokrecemo sagas
+sagaMiddleware.run(watchAuth)
+sagaMiddleware.run(watchBurgerBuilder)
+sagaMiddleware.run(watchOrder)
 
 ReactDOM.render(
   <Provider store={store}>

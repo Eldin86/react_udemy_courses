@@ -1,5 +1,4 @@
 import * as actionTypes from './actionTypes'
-import axios from '../../axios-orders'
 
 /* nazive actions creatorsa koristimo u komponenti kao metodu*/
 
@@ -38,14 +37,8 @@ export const fetchIngredientsFailed = () => {
 }
 //asinhroni action za dohvatanje ingredientsa
 export const initIngredients = () => {
-    return dispatch => {
-        axios.get('https://burger-projekat-ii.firebaseio.com/ingredients.json')
-        .then(response => {
-            dispatch(setIngredients(response.data))
-        })
-        .catch(error => {
-            dispatch(fetchIngredientsFailed())
-        })
-    }
-}
+   return {
+    type: actionTypes.INIT_INGREDIENTS
+   }
+}   
 ///////////////////////////////
