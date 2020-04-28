@@ -2,7 +2,9 @@ import React, {useState} from 'react';
 
 import Card from '../UI/Card';
 import './IngredientForm.css';
+import LoadingIndicator from '../UI/LoadingIndicator'
 
+//react memo usporedjuje props i ako se props promjeni, onda ce se komponenta rerenderati
 const IngredientForm = React.memo(props => {
   //useState koristimo kao zamjenu za state koji je u class komponentama
   //Mozemo definisati inicijalni state, moze biti objekat, niz, primitive value...
@@ -11,6 +13,7 @@ const IngredientForm = React.memo(props => {
   //useState je namjenjen da se koristi tako da koristimo vise useState
   const [enteredTitle, setEnteredTitle] = useState('')
   const [enteredAmount, setEnteredAmount] = useState('')
+  console.log('RENDERING INGREDIENT FORM')
 
   const submitHandler = event => {
     event.preventDefault();
@@ -47,6 +50,8 @@ const IngredientForm = React.memo(props => {
           </div>
           <div className="ingredient-form__actions">
             <button type="submit">Add Ingredient</button>
+            {/* samo ako je loading true renderaj LoadingIndicator */}
+            {props.loading && <LoadingIndicator/>}
           </div>
         </form>
       </Card>
