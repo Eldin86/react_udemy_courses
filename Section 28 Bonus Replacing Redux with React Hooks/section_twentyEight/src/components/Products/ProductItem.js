@@ -19,6 +19,7 @@ const ProductItem = props => {
         <p>{props.description}</p>
         <button
           className={!props.isFav ? 'button-outline' : ''}
+          //kad kliknemo toggleFavHandler dispatchamo toggleFav action
           onClick={toggleFavHandler}
         >
           {props.isFav ? 'Un-Favorite' : 'Favorite'}

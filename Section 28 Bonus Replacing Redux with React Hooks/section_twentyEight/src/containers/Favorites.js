@@ -18,4 +18,13 @@ const Favorites = props => {
             key={prod.id}
             id={prod.id}
             title={prod.title}
-            description={prod.descri
+            description={prod.description}
+          />
+        ))}
+      </ul>
+    );
+  }
+  return content;
+};
+
+export default Favorites;
